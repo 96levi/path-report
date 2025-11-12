@@ -1,0 +1,17 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-footer {
+  margin-top: auto;
+  padding: 1rem;
+  text-align: right;
+  border-top: 1px solid #eee;
+}
+
+.header {
+  padding: 10px;
+  text-align: right;
+}

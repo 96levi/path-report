@@ -1,5 +1,327 @@
-<h3>Template for Reporting Results of Biomarker Testing of
-Specimens From Patients With Carcinoma of the Colon and
-Rectum </h3>
+<h1>Template for Reporting Results of Biomarker Testing of
+    Specimens From Patients With Carcinoma of the Colon and
+    Rectum </h1>
 
 
+<form [formGroup]="pathologyReportForm" (ngSubmit)="onSubmit()">
+
+
+    <!-- Mismatch Repair and MSI Section -->
+    <fieldset>
+        <legend>
+            <h2>Mismatch Repair & Microsatellite Instability (MSI)</h2>
+        </legend>
+
+        <fieldset formGroupName="mmrTesting">
+            <legend><input type="checkbox" formControlName="done">Immunohistochemistry (IHC) Testing for Mismatch Repair
+                (MMR) Proteins</legend>
+            @if (pathologyReportForm.get('mmrTesting.done')?.value) {
+            <fieldset>
+                <legend>MLH1 Result</legend>
+                <label><input type="radio" formControlName="mlh1Result" value="intact"> Intact nuclear
+                    expression</label>
+                <label><input type="radio" formControlName="mlh1Result" value="loss"> Loss of nuclear expression</label>
+                <label>
+                    <input type="radio" formControlName="mlh1Result" value="cannot_determined"> Cannot be determined
+                    (explain):
+                    @if (pathologyReportForm.get('mmrTesting.mlh1Result')?.value === 'cannot_determined') {
+                    <input type="text" class="explain-field" formControlName="mlh1Explain">
+                    }
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>MSH2 Result</legend>
+                <label><input type="radio" formControlName="msh2Result" value="intact"> Intact nuclear
+                    expression</label>
+                <label><input type="radio" formControlName="msh2Result" value="loss"> Loss of nuclear expression</label>
+                <label>
+                    <input type="radio" formControlName="msh2Result" value="cannot_determined"> Cannot be determined
+                    (explain):
+                    @if (pathologyReportForm.get('mmrTesting.msh2Result')?.value === 'cannot_determined') {
+                    <input type="text" class="explain-field" formControlName="msh2Explain">
+                    }
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>MSH6 Result</legend>
+                <label><input type="radio" formControlName="msh6Result" value="intact"> Intact nuclear
+                    expression</label>
+                <label><input type="radio" formControlName="msh6Result" value="loss"> Loss of nuclear expression</label>
+                <label>
+                    <input type="radio" formControlName="msh6Result" value="cannot_determined"> Cannot be determined
+                    (explain):
+                    @if (pathologyReportForm.get('mmrTesting.msh6Result')?.value === 'cannot_determined') {
+                    <input type="text" class="explain-field" formControlName="msh6Explain">
+                    }
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>PMS2 Result</legend>
+                <label><input type="radio" formControlName="pms2Result" value="intact"> Intact nuclear
+                    expression</label>
+                <label><input type="radio" formControlName="pms2Result" value="loss"> Loss of nuclear expression</label>
+                <label>
+                    <input type="radio" formControlName="pms2Result" value="cannot_determined"> Cannot be determined
+                    (explain):
+                    @if (pathologyReportForm.get('mmrTesting.pms2Result')?.value === 'cannot_determined') {
+                    <input type="text" class="explain-field" formControlName="pms2Explain">
+                    }
+                </label>
+            </fieldset>
+
+            <label><input type="checkbox" formControlName="backgroundControl">Background nonneoplastic tissue / internal
+                control
+
+            </label>
+            }
+        </fieldset>
+
+        @if (pathologyReportForm.get('mmrTesting.done')?.value) {
+        <fieldset>
+            <legend>IHC Interpretation</legend>
+            <label><input type="radio" formControlName="ihcInterpretation" value="no_loss"> No loss of nuclear
+                expression of MMR proteins: low probability of MSI-H </label>
+            <br>
+            <label><input type="radio" formControlName="ihcInterpretation" value="loss_mlh1_pms2"> Loss of nuclear
+                expression of MLH1 and PMS2: testing for methylation of the MLH1 promoter and / or mutation of BRAF is
+                indicated (the presence of a BRAF V600E mutation and / or MLH1 methylation suggests that the tumor is
+                sporadic and germline evaluation is probably not indicated; absence of both MLH1 methylation and of BRAF
+                V600E mutation suggests the possibility of Lynch syndrome and sequencing and / or large deletion /
+                duplication testing of germline MLH1 may be indicated) </label>
+            <br><label><input type="radio" formControlName="ihcInterpretation" value="loss_msh2_msh6"> Loss of nuclear
+                expression of MSH2 and MSH6: high probability of Lynch syndrome (sequencing and / or large deletion /
+                duplication testing of germline MSH2 may be indicated and, if
+                negative, sequencing and / or large deletion / duplication testing of germline MSH6 may be indicated)
+            </label>
+            <br><label><input type="radio" formControlName="ihcInterpretation" value="loss_msh6"> Loss of nuclear
+                expression
+                of MSH6 only: high probability of Lynch syndrome (sequencing and / or large deletion / duplication
+                testing of germline MSH6 may be indicated) </label>
+            <br><label><input type="radio" formControlName="ihcInterpretation" value="loss_pms2"> Loss of nuclear
+                expression
+                of PMS2 only: high probability of Lynch syndrome (sequencing and /
+                or large deletion / duplication testing of germline PMS2 may be indicated)</label>
+            <br>
+            <label># There are exceptions to the above IHC interpretations. These results should not be considered in
+                isolation, and clinical correlation with genetic counseling is recommended to assess the need for
+                germline testing.</label>
+        </fieldset>
+        }
+
+        <fieldset formGroupName="msi">
+            <legend><input type="checkbox" formControlName="done">Microsatellite Instability (MSI)</legend>
+@if (pathologyReportForm.get('msi.done')?.value) {
+            <label><input type="radio" formControlName="result" value="mss"> MSI-Stable (MSS)</label>
+
+            <label><input type="radio" formControlName="result" value="msi_l"> MSI-Low (MSI-L)</label>
+
+            @if (pathologyReportForm.get('msi.result')?.value === 'msi_l') {
+            <div class="sub-section">
+                <label><input type="radio" formControlName="msiLowDetail" value="1_29"> 1-29% of the NCI...</label>
+                <label><input type="radio" formControlName="msiLowDetail" value="1_nci"> 1 of the NCI...</label>
+                <label>
+                    <input type="radio" formControlName="msiLowDetail" value="other"> Other (specify):
+                    @if (pathologyReportForm.get('msi.msiLowDetail')?.value === 'other') {
+                    <input type="text" class="explain-field" formControlName="msiLowOther">
+                    }
+                </label>
+            </div>
+            }
+
+            <label><input type="radio" formControlName="result" value="msi_h"> MSI-High (MSI-H)</label>
+
+            @if (pathologyReportForm.get('msi.result')?.value === 'msi_h') {
+            <div class="sub-section">
+                <label><input type="radio" formControlName="msiHighDetail" value="gte_30"> Greater than or equal to
+                    30%...</label>
+                <label><input type="radio" formControlName="msiHighDetail" value="gte_2"> 2 or more of the
+                    NCI...</label>
+                <label>
+                    <input type="radio" formControlName="msiHighDetail" value="other"> Other (specify):
+                    @if (pathologyReportForm.get('msi.msiHighDetail')?.value === 'other') {
+                    <input type="text" class="explain-field" formControlName="msiHighOther">
+                    }
+                </label>
+            </div>
+            }
+
+            <label><input type="radio" formControlName="result" value="cannot_determined"> MSI-Cannot be
+                determined</label>
+            }
+        </fieldset>
+
+    </fieldset>
+
+    <!-- HER2 Section -->
+    <fieldset>
+        <legend>
+            <h2>HER2 (Note F)</h2>
+        </legend>
+
+        <fieldset formGroupName="her2TestsPerformed">
+            <legend>Test(s) Performed (select all that apply)</legend>
+            <label>
+                <input type="checkbox" formControlName="ihc"> HER2 by IHC
+            </label>
+            <label>
+                <input type="checkbox" formControlName="ish"> HER2 (ERBB2) by ISH
+            </label>
+            <label>
+                <input type="checkbox" formControlName="genomic"> HER2 (ERBB2) by Genomic Test
+            </label>
+        </fieldset>
+
+        @if (her2Tests.get('ihc')?.value) {
+        <div class="sub-section" formGroupName="her2Ihc">
+            <h3>HER2 by IHC</h3>
+
+            <fieldset>
+                <legend>+Results</legend>
+                <label><input type="radio" formControlName="results" value="negative_0"> Negative (Score 0)</label>
+                <label><input type="radio" formControlName="results" value="negative_1+"> Negative (Score 1+)</label>
+                <label><input type="radio" formControlName="results" value="equivocal_2+"> Equivocal (Score 2+)</label>
+                <label><input type="radio" formControlName="results" value="positive_3+"> Positive (Score 3+)</label>
+                <label>
+                    <input type="radio" formControlName="results" value="cannot_determined"> Cannot be determined
+                    (explain):
+                    @if (her2Ihc.get('results')?.value === 'cannot_determined') {
+                    <input type="text" class="explain-field" formControlName="resultsExplain">
+                    }
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>+Scoring System</legend>
+                <label><input type="radio" formControlName="scoringSystem" value="asco_cap_2018"> ASCO / CAP HER2 Breast
+                    Cancer 2018</label>
+                <label><input type="radio" formControlName="scoringSystem" value="cap_ascp_2016"> CAP / ASCP / ASCO HER2
+                    Gastroesophageal Adenocarcinoma 2016</label>
+                <label><input type="radio" formControlName="scoringSystem" value="heracles"> HERACLES</label>
+                <label>
+                    <input type="radio" formControlName="scoringSystem" value="other"> Other (specify):
+                    @if (her2Ihc.get('scoringSystem')?.value === 'other') {
+                    <input type="text" class="explain-field" formControlName="scoringSystemOther">
+                    }
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>+Staining Intensity</legend>
+                <label><input type="radio" formControlName="stainingIntensity" value="0"> 0 (none)</label>
+                <label><input type="radio" formControlName="stainingIntensity" value="1+"> 1+ (faint or barely
+                    perceptible)</label>
+                <label><input type="radio" formControlName="stainingIntensity" value="2+"> 2+ (weak to moderate)</label>
+                <label><input type="radio" formControlName="stainingIntensity" value="3+"> 3+ (strong)</label>
+                <label>
+                    <input type="radio" formControlName="stainingIntensity" value="other"> Other (specify):
+                    @if (her2Ihc.get('stainingIntensity')?.value === 'other') {
+                    <input type="text" class="explain-field" formControlName="stainingIntensityOther">
+                    }
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>+Percentage of Tumor Cells...</legend>
+                <label><input type="radio" formControlName="percentageTumorCells" value="less_10"> Less than 10%</label>
+                <label><input type="radio" formControlName="percentageTumorCells" value="10_49"> 10-49%</label>
+                <label><input type="radio" formControlName="percentageTumorCells" value="greater_50"> Greater than or
+                    equal to 50%</label>
+                <label>
+                    <input type="radio" formControlName="percentageTumorCells" value="specify"> Specify percentage:
+                    <input type="number" class="number-field" formControlName="percentageSpecify"> %
+                </label>
+            </fieldset>
+        </div>
+        }
+
+        @if (her2Tests.get('ish')?.value) {
+        <div class="sub-section" formGroupName="her2Ish">
+            <h3>HER2 (ERBB2) by ISH</h3>
+
+            <fieldset>
+                <legend>+Results</legend>
+                <label><input type="radio" formControlName="results" value="negative"> Negative (not amplified)</label>
+                <label><input type="radio" formControlName="results" value="positive"> Positive (amplified)</label>
+                <label>
+                    <input type="radio" formControlName="results" value="cannot_determined"> Cannot be determined
+                    (explain):
+                    @if (her2Ish.get('results')?.value === 'cannot_determined') {
+                    <input type="text" class="explain-field" formControlName="resultsExplain">
+                    }
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>+Scoring System</legend>
+                <label><input type="radio" formControlName="scoringSystem" value="asco_cap_2018"> ASCO / CAP HER2 Breast
+                    Cancer 2018</label>
+            </fieldset>
+
+            <label>+Number of Invasive Cancer Cells Counted: <input type="number" formControlName="cellsCounted">
+                cells</label>
+
+            <fieldset>
+                <legend>+Method</legend>
+                <label><input type="checkbox" formControlName="dualProbe"> Using dual-probe assay</label>
+
+                @if (her2Ish.get('dualProbe')?.value) {
+                <div class="sub-section" formGroupName="dualProbeDetails">
+                    <label>+HER2(ERBB2):CEP17 Ratio: <input type="text" formControlName="ratio"></label>
+                    <label>+Average Number of HER2 (ERBB2) Signals: <input type="number" formControlName="avgHer2">
+                        signals/cell</label>
+                    <label>+Average Number of CEP17 Signals: <input type="number" formControlName="avgCep17">
+                        signals/cell</label>
+                    <label>+Range of Number of HER2 (ERBB2) Signals: <input type="text"
+                            formControlName="rangeHer2"></label>
+                </div>
+                }
+
+                <label><input type="checkbox" formControlName="singleProbe"> Using single-probe assay</label>
+
+                @if (her2Ish.get('singleProbe')?.value) {
+                <div class="sub-section" formGroupName="singleProbeDetails">
+                    <label>+Average Number of HER2 (ERBB2) Signals: <input type="number" formControlName="avgHer2">
+                        signals/cell</label>
+                    <label>+Range of Number of HER2 (ERBB2) Signals: <input type="text"
+                            formControlName="rangeHer2"></label>
+                </div>
+                }
+            </fieldset>
+        </div>
+        }
+
+        @if (her2Tests.get('genomic')?.value) {
+        <div class="sub-section" formGroupName="her2Genomic">
+            <h3>HER2 (ERBB2) by Genomic Test</h3>
+            <fieldset>
+                <legend>+Results</legend>
+                <label><input type="radio" formControlName="results" value="negative"> Negative</label>
+                <label>
+                    <input type="radio" formControlName="results" value="positive"> Positive (specify):
+                    @if (her2Genomic.get('results')?.value === 'positive') {
+                    <input type="text" class="explain-field" formControlName="resultsPositiveSpecify">
+                    }
+                </label>
+                <label>
+                    <input type="radio" formControlName="results" value="cannot_determined"> Cannot be determined
+                    (explain):
+                    @if (her2Genomic.get('results')?.value === 'cannot_determined') {
+                    <input type="text" class="explain-field" formControlName="resultsExplain">
+                    }
+                </label>
+            </fieldset>
+        </div>
+        }
+    </fieldset>
+
+    <hr>
+
+    <button type="submit" [disabled]="!pathologyReportForm.valid">Submit Report</button>
+
+    <h3>Form Data (for debugging):</h3>
+    <pre>{{ pathologyReportForm.value | json }}</pre>
+
+</form>
