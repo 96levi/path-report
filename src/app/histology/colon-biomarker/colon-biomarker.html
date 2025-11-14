@@ -82,25 +82,34 @@
         @if (pathologyReportForm.get('mmrTesting.done')?.value) {
         <fieldset>
             <legend>IHC Interpretation</legend>
-            <label><input type="radio" formControlName="ihcInterpretation" value="no_loss"> No loss of nuclear
+            <label><input type="radio" formControlName="ihcInterpretation"
+                    value="No loss of nuclear expression of MMR proteins: low probability of MSI-H"> No loss of nuclear
                 expression of MMR proteins: low probability of MSI-H </label>
             <br>
-            <label><input type="radio" formControlName="ihcInterpretation" value="loss_mlh1_pms2"> Loss of nuclear
+            <label><input type="radio" formControlName="ihcInterpretation"
+                    value="Loss of nuclear expression of MLH1 and PMS2: testing for methylation of the MLH1 promoter and / or mutation of BRAF is indicated (the presence of a BRAF V600E mutation and / or MLH1 methylation suggests that the tumor is sporadic and germline evaluation is probably not indicated; absence of both MLH1 methylation and of BRAF V600E mutation suggests the possibility of Lynch syndrome and sequencing and / or large deletion /duplication testing of germline MLH1 may be indicated)">
+                Loss of nuclear
                 expression of MLH1 and PMS2: testing for methylation of the MLH1 promoter and / or mutation of BRAF is
                 indicated (the presence of a BRAF V600E mutation and / or MLH1 methylation suggests that the tumor is
                 sporadic and germline evaluation is probably not indicated; absence of both MLH1 methylation and of BRAF
                 V600E mutation suggests the possibility of Lynch syndrome and sequencing and / or large deletion /
                 duplication testing of germline MLH1 may be indicated) </label>
-            <br><label><input type="radio" formControlName="ihcInterpretation" value="loss_msh2_msh6"> Loss of nuclear
+            <br><label><input type="radio" formControlName="ihcInterpretation"
+                    value="Loss of nuclear expression of MSH2 and MSH6: high probability of Lynch syndrome (sequencing and / or large deletion / duplication testing of germline MSH2 may be indicated and, if negative, sequencing and / or large deletion / duplication testing of germline MSH6 may be indicated)">
+                Loss of nuclear
                 expression of MSH2 and MSH6: high probability of Lynch syndrome (sequencing and / or large deletion /
                 duplication testing of germline MSH2 may be indicated and, if
                 negative, sequencing and / or large deletion / duplication testing of germline MSH6 may be indicated)
             </label>
-            <br><label><input type="radio" formControlName="ihcInterpretation" value="loss_msh6"> Loss of nuclear
+            <br><label><input type="radio" formControlName="ihcInterpretation"
+                    value="Loss of nuclear expression of MSH6 only: high probability of Lynch syndrome (sequencing and / or large deletion / duplication testing of germline MSH6 may be indicated)">
+                Loss of nuclear
                 expression
                 of MSH6 only: high probability of Lynch syndrome (sequencing and / or large deletion / duplication
                 testing of germline MSH6 may be indicated) </label>
-            <br><label><input type="radio" formControlName="ihcInterpretation" value="loss_pms2"> Loss of nuclear
+            <br><label><input type="radio" formControlName="ihcInterpretation"
+                    value="Loss of nuclear expression of PMS2 only: high probability of Lynch syndrome (sequencing and / or large deletion / duplication testing of germline PMS2 may be indicated)">
+                Loss of nuclear
                 expression
                 of PMS2 only: high probability of Lynch syndrome (sequencing and /
                 or large deletion / duplication testing of germline PMS2 may be indicated)</label>
@@ -113,7 +122,7 @@
 
         <fieldset formGroupName="msi">
             <legend><input type="checkbox" formControlName="done">Microsatellite Instability (MSI)</legend>
-@if (pathologyReportForm.get('msi.done')?.value) {
+            @if (pathologyReportForm.get('msi.done')?.value) {
             <label><input type="radio" formControlName="result" value="mss"> MSI-Stable (MSS)</label>
 
             <label><input type="radio" formControlName="result" value="msi_l"> MSI-Low (MSI-L)</label>
@@ -321,7 +330,13 @@
 
     <button type="submit" [disabled]="!pathologyReportForm.valid">Submit Report</button>
 
-    <h3>Form Data (for debugging):</h3>
-    <pre>{{ pathologyReportForm.value | json }}</pre>
+
 
 </form>
+<!-- Preview -->
+
+<pre style="white-space: pre-wrap;">{{outputData}} </pre>
+
+<h3>Form Data (for debugging):</h3>
+<pre>{{ pathologyReportForm.value | json }}</pre>
+<!-- End Preview -->

@@ -15,6 +15,7 @@ export class ColonBiomarker {
   constructor(private fb: FormBuilder) { }
 
   pathologyReportForm!: FormGroup;
+  outputData = "";
 
   ngOnInit(): void {
     this.pathologyReportForm = this.fb.group({
@@ -113,7 +114,17 @@ export class ColonBiomarker {
   onSubmit(): void {
     if (this.pathologyReportForm.valid) {
       console.log('Form Submitted!', this.pathologyReportForm.value);
-      // Here you would send the data to your backend (e.g., a PHP server)
+      
+      // MMR Testing Output
+      this.pathologyReportForm.controls['mmrTesting'].value.done ? this.outputData = "IHC testing for MMR protein: \n" : this.outputData = "";
+      this.pathologyReportForm.value.mmrTesting.mlh1Result ? this.outputData += `\tMLH1: ${this.pathologyReportForm.value.mmrTesting.mlh1Result}. ${this.pathologyReportForm.value.mmrTesting.mlh1Explain}\n` : '';
+      this.pathologyReportForm.value.mmrTesting.msh2Result ? this.outputData += `\tMSH2: ${this.pathologyReportForm.value.mmrTesting.msh2Result}. ${this.pathologyReportForm.value.mmrTesting.msh2Explain}\n` : '';
+      this.pathologyReportForm.value.mmrTesting.msh6Result ? this.outputData += `\tMSH6: ${this.pathologyReportForm.value.mmrTesting.msh6Result}. ${this.pathologyReportForm.value.mmrTesting.msh6Explain}\n` : '';
+      this.pathologyReportForm.value.mmrTesting.pms2Result ? this.outputData += `\tPMS2: ${this.pathologyReportForm.value.mmrTesting.pms2Result}. ${this.pathologyReportForm.value.mmrTesting.pms2Explain}\n` : '';
+      this.pathologyReportForm.value.mmrTesting.backgroundControl ? this.outputData += '\tBackground nonneoplastic tissue / internal control present.' : '';
+
+      this.outputData += `\nIHC Interpretation: ${this.pathologyReportForm.value.ihcInterpretation}.\n`;
+
     } else {
       console.log('Form is invalid');
     }
