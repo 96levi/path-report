@@ -1,5 +1,14 @@
 # PathReports
+Dự án Path-Report nhằm tạo ra ứng dụng giúp các bác sĩ Giải phẫu bệnh Việt Nam có thể trả kết quả theo tiêu chuẩn của Hiệp hội Giải Phẫu Bệnh học Hoa Kỳ [College of American Pathologists](https://www.cap.org/).
 
+
+
+Path-Report tạo ra với mục đích phi lợi nhuận, hỗ trợ nhân viên y tế trong việc báo cáo kết quả dưới dạng văn bản (text-based) tuân thủ theo yêu cầu về [Bản quyền của Hiệp hội Giải Phẫu Bệnh học Hoa Kỳ](https://www.cap.org/protocols-and-guidelines/cancer-reporting-tools/cancer-protocol-templates). Người dùng tự lưu trữ dữ liệu bằng các công cụ lưu trữ của bệnh viện hoặc cá nhân.
+
+Dự án đang được xây dựng và cần được duy trì, cập nhật theo các khuyến cáo mới nhất. Do đó rất cần sự hỗ trợ từ mọi người.
+Nếu muốn tài trợ dự án, xin liên hệ Bs. Lê Vĩ qua email [v24996@gmail.com](mailto:v24996@gmail.com). Xin trân trọng cám ơn!
+
+# Project configuration for developer
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
 
 ## Development server
