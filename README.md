@@ -1,4 +1,4 @@
-# Path-Reports
+# Path-Report
 Dự án Path-Report nhằm tạo ra ứng dụng giúp các bác sĩ Giải phẫu bệnh Việt Nam có thể trả kết quả theo tiêu chuẩn của Hiệp hội Giải Phẫu Bệnh học Hoa Kỳ [College of American Pathologists](https://www.cap.org/).
 
 Path-Report tạo ra với mục đích phi lợi nhuận, hỗ trợ nhân viên y tế trong việc báo cáo kết quả dưới dạng văn bản (text-based) tuân thủ theo yêu cầu về [Bản quyền của Hiệp hội Giải Phẫu Bệnh học Hoa Kỳ](https://www.cap.org/protocols-and-guidelines/cancer-reporting-tools/cancer-protocol-templates). Path-Report không lưu trữ dữ liệu, người dùng tự lưu trữ dữ liệu bằng các công cụ lưu trữ của bệnh viện hoặc cá nhân.
