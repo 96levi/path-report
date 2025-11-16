@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "path-reports": {
+    "path-report": {
       "projectType": "application",
       "schematics": {},
       "root": "",
