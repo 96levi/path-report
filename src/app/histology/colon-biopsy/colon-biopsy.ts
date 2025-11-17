@@ -157,10 +157,54 @@ export class ColonBiopsy {
       // Specimen
       if (data.specimen.procedure) {
         this.outputData += `SPECIMEN\n`;
-        this.outputData += `Procedure: `;
-        this.outputData += `${data.specimen.procedure} ${data.specimen.procedure == 'Other (specify):' ? `${data.specimen.procedureOther}` : ''}\n`;
+        this.outputData += `\tProcedure: `;
+        this.outputData += `${data.specimen.procedure} ${data.specimen.procedure == 'Other (specify)' ? `${data.specimen.procedureOther}` : ''}\n`;
         this.outputData += `\tSpecimen Integrity: `;
         this.outputData += `${data.specimen.specimenIntergrity}\n\n`;
+      }
+
+      // Tumor
+      if (data.tumor.site || data.tumor.histologicType || data.tumor.histologicGrade) {
+        this.outputData += `TUMOR\n`;
+        // Site
+        if (data.tumor.site) {
+          this.outputData += `\tTumor Site: `;
+          this.outputData += `${data.tumor.site} ${data.tumor.site == 'Other (specify)' ? `${data.tumor.siteOther}` : ''}\n`;
+        }
+        // Histologic Type
+        if (data.tumor.histologicType) {
+          this.outputData += `\tHistologic Type: `;
+          this.outputData += `${data.tumor.histologicType} ${data.tumor.histologicType == 'Other (specify):' ? `${data.tumor.histologicTypeOther}` : ''}\n`;
+          if (data.tumor.histologicComment) {
+            this.outputData += `\tHistologic Type Comment: ${data.tumor.histologicComment}\n`;
+          }
+        }
+        // Histologic Grade
+        if (data.tumor.histologicGrade) {
+          this.outputData += `\tHistologic Grade: `;
+          this.outputData += `${data.tumor.histologicGrade} ${['Other (specify):', 'Not applicable (specify):'].includes(data.tumor.histologicGrade) ? `${data.tumor.histologicGradeOther}` : ''}\n`;
+          if (data.tumor.histologicGradeExplain) {
+            this.outputData += `\t${data.tumor.histologicGradeExplain}\n`;
+          }
+
+          // Size of Invasive Carcinoma
+          if (data.tumor.sizeGreatestDimension || data.tumor.sizeAdditionalDimensions || data.tumor.sizeExplain) {
+            this.outputData += `\tSize of Invasive Carcinoma: \n`;
+            if (data.tumor.sizeGreatestDimension) {
+              this.outputData += `\t\tGreatest dimension in Centimeters (cm): ${data.tumor.sizeGreatestDimension} cm\n`;
+            }
+            if (data.tumor.sizeAdditionalDimensions) {
+              this.outputData += `\t\tAdditional Dimension in Centimeters (cm): ${data.tumor.sizeAdditionalDimensions} cm\n`;
+            }
+            if (data.tumor.sizeExplain) {
+              this.outputData += `\t\tSize cannot be determined (explain):${data.tumor.sizeExplain}\n`;
+            }
+          }
+        }
+
+
+
+        this.outputData += `\n`;
       }
     }
   }

@@ -4,43 +4,146 @@
         v4.3.0.0</a></p>
 
 <form [formGroup]="pathologyReportForm" (ngSubmit)="onSubmit()">
-    <!-- Specimen-->
+    <!-- SPECIMEN-->
     <fieldset formGroupName="specimen">
         <legend>SPECIMEN</legend>
         <fieldset>
             <legend>Procedure</legend>
-            <label><input type="radio" formControlName="procedure" value="Excisional biopsy (polypectomy)"> Excisional
-                biopsy (polypectomy)</label>
-            <br><label><input type="radio" formControlName="procedure" value="Endoscopic mucosal resection (EMR)">
-                Endoscopic mucosal resection (EMR)</label>
-            <br><label><input type="radio" formControlName="procedure" value="Endoscopic submucosal dissection (ESD)">
-                Endoscopic submucosal dissection (ESD)</label>
-            <br><label><input type="radio" formControlName="procedure" value="Transanal disk excision"> Transanal disk
-                excision</label>
-            <br><label><input type="radio" formControlName="procedure" value="Other (specify):"> Other (specify):
-                @if (pathologyReportForm.get('specimen.procedure')?.value === 'Other (specify):') {
-                <input type="text" formControlName="procedureOther" />
-                }
-            </label>
+            <select formControlName="procedure">
+                <option value="Excisional biopsy (polypectomy)">Excisional biopsy (polypectomy)</option>
+                <option value="Endoscopic mucosal resection (EMR)">Endoscopic mucosal resection (EMR)</option>
+                <option value="Endoscopic submucosal dissection (ESD)">Endoscopic submucosal dissection (ESD)</option>
+                <option value="Transanal disk excision">Transanal disk excision</option>
+                <option value="Other (specify)">Other (specify)</option>
+                <option value="Not specified">Not specified</option>
+            </select>
+            @if (pathologyReportForm.get('specimen.procedure')?.value === 'Other (specify)') {
+            <div style="margin-top: 8px;">
+                <label>Specify:
+                    <input type="text" formControlName="procedureOther">
+                </label>
+            </div>
+            }
+        </fieldset>
 
-            <br><label><input type="radio" formControlName="procedure" value="Not specified"> Not specified</label>
+        <fieldset>
+            <legend>Specimen Integrity</legend>
+            <select formControlName="specimenIntergrity">
+                <option value="Intact">Intact</option>
+                <option value="Fragmented">Fragmented</option>
+            </select>
+        </fieldset>
+
+    </fieldset>
+
+    <!-- TUMOR -->
+    <fieldset formGroupName="tumor">
+        <legend>TUMOR</legend>
+        <fieldset>
+            <legend>Tumor site</legend>
+            <select formControlName="site">
+                <option value="Cecum">Cecum</option>
+                <option value="Ascending colon">Ascending colon</option>
+                <option value="Hepatic flexure">Hepatic flexure</option>
+                <option value="Transverse colon">Transverse colon</option>
+                <option value="Splenic flexure">Splenic flexure</option>
+                <option value="Descending colon">Descending colon</option>
+                <option value="Sigmoid colon">Sigmoid colon</option>
+                <option value="Rectosigmoid region">Rectosigmoid region</option>
+                <option value="Rectum">Rectum</option>
+                <option value="Other (specify)">Other (specify)</option>
+                <option value="Not specified">Not specified</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.site')?.value === 'Other (specify)') {
+            <div style="margin-top: 8px;">
+                <label>Specify:
+                    <input type="text" formControlName="siteOther">
+                </label>
+            </div>
+            }
+        </fieldset>
+
+        <fieldset>
+            <legend>Histologic Type</legend>
+            <select formControlName="histologicType">
+                <option value="Adenocarcinoma">Adenocarcinoma</option>
+                <option value="Mucinous adenocarcinoma">Mucinous adenocarcinoma</option>
+                <option value="Signet-ring cell carcinoma (poorly cohesive carcinoma)">Signet-ring cell carcinoma
+                    (poorly cohesive carcinoma)</option>
+                <option value="Medullary adenocarcinoma">Medullary adenocarcinoma</option>
+                <option value="Serrated adenocarcinoma">Serrated adenocarcinoma</option>
+                <option value="Micropapillary carcinoma">Micropapillary carcinoma</option>
+                <option value="Adenoma-like adenocarcinoma">Adenoma-like adenocarcinoma</option>
+                <option value="Adenosquamous carcinoma">Adenosquamous carcinoma</option>
+                <option value="Undifferentiated carcinoma">Undifferentiated carcinoma</option>
+                <option value="Carcinoma with sarcomatoid component">Carcinoma with sarcomatoid component</option>
+                <option value="Large cell neuroendocrine carcinoma">Large cell neuroendocrine carcinoma</option>
+                <option value="Small cell neuroendocrine carcinoma">Small cell neuroendocrine carcinoma</option>
+                <option value="Mixed neuroendocrine-non-neuroendocrine neoplasm">Mixed neuroendocrine-non-neuroendocrine
+                    neoplasm</option>
+                <option value="Other (specify):">Other (specify):</option>
+                <option value="Cannot be determined">Cannot be determined</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.histologicType')?.value === 'Other (specify):') {
+            <div style="margin-top: 8px;">
+                <label>Specify:
+                    <input type="text" formControlName="histologicTypeOther">
+                </label>
+            </div>
+            }
+
+            <br><label>Histologic Type Comment: <input type="text" formControlName="histologicComment"> </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Histologic Grade</legend>
+            <select formControlName="histologicGrade">
+                <option value="G1, well differentiated">G1, well differentiated</option>
+                <option value="G2, moderately differentiated">G2, moderately differentiated</option>
+                <option value="G3, poorly differentiated">G3, poorly differentiated</option>
+                <option value="G4, undifferentiated">G4, undifferentiated</option>
+                <option value="Other (specify):"> Other (specify):</option>
+                <option value="GX, cannot be assessed">GX, cannot be assessed</option>
+                <option value="Not applicable (specify):">Not applicable (specify):</option>
+            </select>
+            @if (['Other (specify):', 'Not applicable (specify):'].includes(pathologyReportForm.get('tumor.histologicGrade')?.value)) {
+            <div style="margin-top: 8px;">
+                <label>Specify:
+                    <input type="text" formControlName="histologicGradeOther">
+                </label>
+            </div>
+            }
+
             <fieldset>
-                <legend>Specimen Intergrity</legend>
-                <label><input type="radio" formControlName="specimenIntergrity" value="Intact"> Intact</label>
-                <br><label><input type="radio" formControlName="specimenIntergrity" value="Fragmented"> Fragmented</label>
-                
+                <legend>Size of Invasive Carcinoma</legend>
+                <label>Greatest Dimension (in cm): <input type="number" step="0.1" formControlName="sizeGreatestDimension"> </label>
+                <br><label>Additional Dimension in Centimeters (cm): <input type="text" formControlName="sizeAdditionalDimensions"> </label>
+                <br><label>Cannot be determined (explain): <input type="text" formControlName="sizeExplain"> </label>
             </fieldset>
         </fieldset>
     </fieldset>
-    <!-- Tumour-->
 
-    <!-- Margins-->
+    <!-- Tumor type -->
+
+    <!-- Tumor size -->
+
+    <!-- Tumor site -->
+
+    <!-- Histologic type -->
+
+    <!-- Histologic grade -->
+
+    <!-- Lymphovascular invasion -->
+
+    <!-- Perineural invasion -->
+
+    <!-- Margins -->
 
     <!-- Additional findings -->
 
     <!-- Comments -->
 
-    <button type="submit" [disabled]="!pathologyReportForm.valid">Submit Report</button>
+    <br> <button type="submit" [disabled]="!pathologyReportForm.valid">Submit Report</button>
 </form>
 
 <!-- Preview -->
