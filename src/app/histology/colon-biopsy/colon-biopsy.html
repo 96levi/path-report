@@ -27,7 +27,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>Specimen Integrity</legend>
+            <legend>+Specimen Integrity</legend>
             <select formControlName="specimenIntergrity">
                 <option value="Intact">Intact</option>
                 <option value="Fragmented">Fragmented</option>
@@ -43,6 +43,7 @@
             <legend>Tumor site</legend>
             <select formControlName="site">
                 <option value="Cecum">Cecum</option>
+                <option value="Ileocecal valve">Ileocecal valve</option>
                 <option value="Ascending colon">Ascending colon</option>
                 <option value="Hepatic flexure">Hepatic flexure</option>
                 <option value="Transverse colon">Transverse colon</option>
@@ -114,33 +115,508 @@
             </div>
             }
 
+
+        </fieldset>
+        <fieldset>
+            <legend>+Size of Invasive Carcinoma</legend>
+            <label>Greatest Dimension (in cm): <input type="number" step="0.1" formControlName="sizeGreatestDimension"> </label>
+            <br><label>&nbsp;<strong>+Additional Dimension in Centimeters (cm):</strong> <input type="text" formControlName="sizeAdditionalDimensions"> </label>
+            <br><label>Cannot be determined (explain): <input type="text" formControlName="sizeExplain"> </label>
+        </fieldset>
+        <fieldset>
+            <legend>Tumor Extent</legend>
+            <select formControlName="tumorExtent">
+                <option value="Invades lamina propria">Invades lamina propria</option>
+                <option value="Invades muscularis mucosae">Invades muscularis mucosae</option>
+                <option value="Invades submucosa">Invades submucosa</option>
+                <option value="Invades muscularis propria">Invades muscularis propria</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.tumorExtent')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="tumorExtentExplain">
+                </label>
+            </div>
+            }
+
+        </fieldset>
+        <fieldset>
+            <legend>+Depth of Sub-mucosal Invasion </legend>
+            <select formControlName="depthSubmucosalInvasion">
+                <option value="Less than 1 mm">Less than 1 mm</option>
+                <option value="Greater than or equal to 1 mm and less than 2 mm">Greater than or equal to 1 mm and
+                    less than 2 mm</option>
+                <option value="Greater than 2 mm">Greater than 2 mm</option>
+                <option value="Exact depth in Millimeters (mm):">Exact depth in Millimeters (mm):</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.depthSubmucosalInvasion')?.value === 'Exact depth in Millimeters (mm):') {
+            <div style="margin-top: 8px;">
+                <label>Specify depth (in mm):
+                    <input type="number" step="0.1" formControlName="depthExact">
+                </label>
+            </div>
+            }
+            @if (pathologyReportForm.get('tumor.depthSubmucosalInvasion')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="depthExplain">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Lymphatic and / or Vascular Invasion</legend>
+            <select formControlName="lymphaticVascularInvasion">
+                <option value="Not identified">Not identified</option>
+                <option value="Small vessel">Small vessel</option>
+                <option value="Large vessel (venous)">Large vessel (venous)</option>
+                <option value="Present (not otherwise specified)">Present (not otherwise specified)</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.lymphaticVascularInvasion')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="lymphaticVascularInvasionExplain">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Perineural Invasion</legend>
+            <select formControlName="perineuralInvasion">
+                <option value="Not identified">Not identified</option>
+                <option value="Present">Present</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.perineuralInvasion')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="perineuralInvasionExplain">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Tumor Budding Score</legend>
+            <select formControlName="tumorBudding">
+                <option value="Low (0-4)">Low (0-4)</option>
+                <option value="Intermediate (5-9)">Intermediate (5-9)</option>
+                <option value="High (10 or more)">High (10 or more)</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.tumorBudding')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="tumorBuddingExplain">
+                </label>
+            </div>
+            }
+
+        </fieldset>
+        <fieldset>
+            <legend>+Number of Tumor Buds</legend>
+            <select formControlName="numberTumorBuds">
+                <option value="Specify number in one 'hotspot' field (in an area = 0.785 mm2):">Specify number in
+                    one 'hotspot' field (in an area = 0.785 mm2):</option>
+                <option value="Other (specify):">Other (specify):</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.numberTumorBuds')?.value === "Specify number in one 'hotspot' field (in an area = 0.785 mm2):") {
+            <div style="margin-top: 8px;">
+                <label>Number per 'hotspot' field:
+                    <input type="number" formControlName="numberTumorBudsSpecify">
+                </label>
+            </div>
+            }
+            @if (pathologyReportForm.get('tumor.numberTumorBuds')?.value === 'Other (specify):') {
+            <div style="margin-top: 8px;">
+                <label>Specify:
+                    <input type="text" formControlName="numberTumorBudsOther">
+                </label>
+            </div>
+            }
+            @if (pathologyReportForm.get('tumor.numberTumorBuds')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="numberTumorBudsExplain">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>+Type of Polyp in which Invasive Carcinoma Arose</legend>
+            <select formControlName="typeOfPolyp">
+                <option value="Tubular adenoma">Tubular adenoma</option>
+                <option value="Villous adenoma">Villous adenoma</option>
+                <option value="Tubulovillous adenoma">Tubulovillous adenoma</option>
+                <option value="Traditional serrated adenoma">Traditional serrated adenoma</option>
+                <option value="Sessile serrated adenoma / sessile serrated polyp / sessile serrated lesion">Sessile
+                    serrated adenoma / sessile serrated polyp / sessile serrated lesion</option>
+                <option value="Hamartomatous polyp">Hamartomatous polyp</option>
+                <option value="Other (specify):">Other (specify):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.typeOfPolyp')?.value === 'Other (specify):') {
+            <div style="margin-top: 8px;">
+                <label>Specify:
+                    <input type="text" formControlName="typeOfPolypOther">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Polyp Size (required only for polypectomy specimens)</legend>
+            <select formControlName="polypSize">
+                <option value="Not applicable">Not applicable</option>
+                <option value="Greatest polyp dimension in Centimeters (cm):">Greatest polyp dimension in Centimeters
+                    (cm):</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.polypSize')?.value === 'Greatest polyp dimension in Centimeters (cm):')
+            {
+            <div style="margin-top: 8px;">
+                <label>Greatest polyp dimension (in cm):
+                    <input type="number" step="0.1" formControlName="polypGreatestDimension">
+                </label>
+                <br>
+                <label>&nbsp;<strong>+Additional Polyp Dimension (in cm):</strong>
+                    <input type="text" formControlName="polypAdditionalDimensions">
+                </label>
+            </div>
+            }
+            @if (pathologyReportForm.get('tumor.polypSize')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="polypSizeExplain">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Polyp Configuration (required only for polypectomy specimens)</legend>
+            <select formControlName="polypConfiguration">
+                <option value="Not applicable">Not applicable</option>
+                <option value="Pedunculated with stalk">Pedunculated with stalk</option>
+                <option value="Sessile">Sessile</option>
+
+            </select>
+            @if (pathologyReportForm.get('tumor.polypConfiguration')?.value === 'Pedunculated with stalk') {
             <fieldset>
-                <legend>Size of Invasive Carcinoma</legend>
-                <label>Greatest Dimension (in cm): <input type="number" step="0.1" formControlName="sizeGreatestDimension"> </label>
-                <br><label>Additional Dimension in Centimeters (cm): <input type="text" formControlName="sizeAdditionalDimensions"> </label>
-                <br><label>Cannot be determined (explain): <input type="text" formControlName="sizeExplain"> </label>
+                <legend>+Stalk Length</legend>
+                <select formControlName="stalkLength">
+                    <option value="Specify length in Centimeters (cm):">Specify length in Centimeters (cm):</option>
+                    <option value="Other (specify):">Other (specify):</option>
+                    <option value="Cannot be determined:">Cannot be determined:</option>
+                </select>
+                @if (pathologyReportForm.get('tumor.stalkLength')?.value === 'Specify length in Centimeters (cm):') {
+                <div style="margin-top: 8px;">
+                    <label>Specify length (in cm):
+                        <input type="number" step="0.1" formControlName="stalkLengthCm">
+                    </label>
+                </div>
+                }
+                @if (pathologyReportForm.get('tumor.stalkLength')?.value === 'Other (specify):') {
+                <div style="margin-top: 8px;">
+                    <label>Specify:
+                        <input type="text" formControlName="stalkLengthOther">
+                    </label>
+                </div>
+                }
+                @if (pathologyReportForm.get('tumor.stalkLength')?.value === 'Cannot be determined:') {
+                <div style="margin-top: 8px;">
+                    <label>Explain:
+                        <input type="text" formControlName="stalkLengthExplain">
+                    </label>
+                </div>
+                }
             </fieldset>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Tumor Dimension(s) (required only for intact endoscopic mucosal resections / transanal disk
+                excision / endoscopic mucosal dissection)</legend>
+            <select formControlName="tumorDimensions">
+                <option value="Not applicable">Not applicable</option>
+                <option value="Greatest dimension in Centimeters (cm):">Greatest dimension in Centimeters (cm):</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.tumorDimensions')?.value === 'Greatest dimension in Centimeters (cm):')
+            {
+            <div style="margin-top: 8px;">
+                <label>Greatest dimension (in cm):
+                    <input type="number" step="0.1" formControlName="tumorGreatestDimension">
+                </label>
+                <br>
+                <label>&nbsp; <strong>+Additional Dimension (in cm):</strong>
+                    <input type="text" formControlName="tumorAdditionalDimensions">
+                </label>
+            </div>
+            }
+            @if (pathologyReportForm.get('tumor.tumorDimensions')?.value === 'Cannot be determined (explain):') {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="tumorDimensionsExplain">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Margin Orientation Status (required only if applicable)</legend>
+            <select formControlName="marginOrientationStatus">
+                <option value="Not applicable">Not applicable</option>
+                <option value="Oriented">Oriented</option>
+                <option value="Unoriented">Unoriented</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Number of Specimen Fragments (required only if specimen is fragmented)</legend>
+            <select formControlName="numberSpecimenFragments">
+                <option value="Not applicable (specimen is intact)">Not applicable (specimen is intact)</option>
+                <option value="Exact number (specify):">Exact number (specify):</option>
+                <option value="Cannot be determined">Cannot be determined</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.numberSpecimenFragments')?.value === 'Exact number (specify):') {
+            <div style="margin-top: 8px;">
+                <label>Specify:
+                    <input type="number" formControlName="numberSpecimenFragmentsExactNumber">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>+Dimension of Largest Fragment</legend>
+            <select formControlName="dimensionLargestFragment">
+                <option value="Greatest dimension of the largest fragment in Centimeters (cm):">Greatest dimension of
+                    the largest fragment in Centimeters (cm):</option>
+                <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+            </select>
+            @if (pathologyReportForm.get('tumor.dimensionLargestFragment')?.value === 'Greatest dimension of the largest fragment in Centimeters (cm):') {
+            <div style="margin-top: 8px;">
+                <label>Greatest dimension (in cm):
+                    <input type="number" step="0.1" formControlName="dimensionLargestFragmentCm">
+                </label>
+                <br>
+                <label>&nbsp;<strong>+Additional Dimension (in cm):</strong>
+                    <input type="text" formControlName="dimensionLargestFragmentAdditional">
+                </label>
+            </div>
+            }
+            @if (pathologyReportForm.get('tumor.dimensionLargestFragment')?.value === 'Cannot be determined (explain):')
+            {
+            <div style="margin-top: 8px;">
+                <label>Explain:
+                    <input type="text" formControlName="dimensionLargestFragmentExplain">
+                </label>
+            </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>+Tumor Comment</legend>
+            <textarea formControlName="tumorComment" rows="3"></textarea>
         </fieldset>
     </fieldset>
 
-    <!-- Tumor type -->
+    <!-- MARGINS -->
 
-    <!-- Tumor size -->
+    <fieldset formGroupName="margins">
+        <legend>MARGINS</legend>
+        <fieldset>
+            <legend>Margin Status for Invasive Carcinoma</legend>
+            <fieldset>
+                <select formControlName="marginsStatusForInvasiveCarcinoma">
+                    <option value="All margins negative for invasive carcinoma">All margins negative for invasive carcinoma</option>
+                    <option value="Invasive carcinoma present at margin">Invasive carcinoma present at margin</option>
+                    <option value="Other (specify):">Other (specify):</option>
+                    <option value="Cannot be determined (explain):">Cannot be determined (explain):</option>
+                    <option value="Not applicable">Not applicable</option>
+                </select>
+                @switch (pathologyReportForm.get('margins.marginsStatusForInvasiveCarcinoma')?.value) {
+                @case ('All margins negative for invasive carcinoma') {
+                <fieldset>
+                    <legend>Distance from Invasive Carcinoma to Deep / Stalk Margin</legend>
+                    <select formControlName="distanceFromDeepStalkMargin">
+                        <option value="Exact distance in cm:">Exact distance in cm:</option>
+                        <option value="Greater than 1 cm">Greater than 1 cm</option>
+                        <option value="Other (specify):">Other (specify):</option>
+                        <option value="Cannot be determined:">Cannot be determined:</option>
+                        <option value="Not applicable:">Not applicable:</option>
+                    </select>
+                    @if (pathologyReportForm.get('margins.distanceFromDeepStalkMargin')?.value === 'Exact distance in cm:') {
+                    <div style="margin-top: 8px;">
+                        <label>Specify distance (in cm):
+                            <input type="number" step="0.1" formControlName="distanceFromDeepStalkMarginCm">
+                        </label>
+                    </div>
+                    }
+                    @if (pathologyReportForm.get('margins.distanceFromDeepStalkMargin')?.value === 'Other (specify):') {
+                    <div style="margin-top: 8px;">
+                        <label>Specify:
+                            <input type="text" formControlName="distanceFromDeepStalkMarginOther">
+                        </label>
+                    </div>
+                    }
+                    @if (['Cannot be determined:', 'Not applicable:'].includes(pathologyReportForm.get('margins.distanceFromDeepStalkMargin')?.value )) {
+                    <div style="margin-top: 8px;">
+                        <label>Explain:
+                            <input type="text" formControlName="distanceFromDeepStalkMarginExplain">
+                        </label>
+                    </div>
+                    }
+                </fieldset>
+                <fieldset>
+                    <legend>+Distance from Invasive Carcinoma to Peripheral / Lateral Mucosal Margin</legend>
+                    <select formControlName="distanceFromPeripheralLateralMargin">
+                        <option value="Exact distance in cm:">Exact distance in cm:</option>
+                        <option value="Greater than 1 cm">Greater than 1 cm</option>
+                        <option value="Other (specify):">Other (specify):</option>
+                        <option value="Cannot be determined:">Cannot be determined:</option>
+                        <option value="Not applicable:">Not applicable:</option>
+                    </select>
+                    @if (pathologyReportForm.get('margins.distanceFromPeripheralLateralMargin')?.value === 'Exact distance in cm:') {
+                    <div style="margin-top: 8px;">
+                        <label>Specify distance (in cm):
+                            <input type="number" step="0.1" formControlName="distanceFromPeripheralLateralMarginCm">
+                        </label>
+                    </div>
+                    }
+                    @if (pathologyReportForm.get('margins.distanceFromPeripheralLateralMargin')?.value === 'Other (specify):') {
+                    <div style="margin-top: 8px;">
+                        <label>Specify:
+                            <input type="text" formControlName="distanceFromPeripheralLateralMarginOther">
+                        </label>
+                    </div>
+                    }
+                    @if (['Cannot be determined:', 'Not applicable:'].includes(pathologyReportForm.get('margins.distanceFromPeripheralLateralMargin')?.value )) {
+                    <div style="margin-top: 8px;">
+                        <label>Explain:
+                            <input type="text" formControlName="distanceFromPeripheralLateralMarginExplain">
+                        </label>
+                    </div>
+                    }
+                </fieldset>
 
-    <!-- Tumor site -->
+                }
+                @case ('Invasive carcinoma present at margin') {
+                <fieldset>
 
-    <!-- Histologic type -->
+                    <fieldset>
+                        <legend>Margin(s) Involved by Invasive Carcinoma (select all that apply)</legend>
+                        <div class="checkbox-group">
+                            <input type="checkbox" formControlName="deepStalk" id="icpam_deepStalk">
+                            <label for="icpam_deepStalk">Deep (stalk):</label>
+                            <input type="text" formControlName="deepStalkText">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" formControlName="peripheralLateralMucosal" id="icpam_peripheralLateralMucosal">
+                            <label for="icpam_peripheralLateralMucosal">Peripheral / lateral mucosal</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" formControlName="other" id="icpam_other">
+                            <label for="icpam_other">Other (specify):</label>
+                            <input type="text" formControlName="otherText">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" formControlName="cannotBeDetermined" id="icpam_cannotBeDetermined">
+                            <label for="icpam_cannotBeDetermined">Cannot be determined (explain):</label>
+                            <input type="text" formControlName="cannotBeDeterminedText">
+                        </div>
+                    </fieldset>
 
-    <!-- Histologic grade -->
+                </fieldset>
+                }
+                @case ('Other (specify):') {
+                <div style="margin-top: 8px;">
+                    <label>Specify:
+                        <input type="text" formControlName="marginStatusInvasiveCarcinomaOther">
+                    </label>
+                </div>
+                }
+                @case ('Cannot be determined (explain):') {
+                <div style="margin-top: 8px;">
+                    <label>Explain:
+                        <input type="text" formControlName="marginStatusInvasiveCarcinomaExplain">
+                    </label>
+                </div>
+                }
+                }
 
-    <!-- Lymphovascular invasion -->
+            </fieldset>
 
-    <!-- Perineural invasion -->
+        </fieldset>
 
-    <!-- Margins -->
 
-    <!-- Additional findings -->
 
+        <fieldset formGroupName="marginStatusNonInvasiveTumor">
+            <legend>Margin Status for Non-Invasive Tumor (select all that apply)</legend>
+            <div class="checkbox-group">
+                <input type="checkbox" formControlName="allMarginsNegativeForAdenoma" id="msnit_allMarginsNegativeForAdenoma">
+                <label for="msnit_allMarginsNegativeForAdenoma">All margins negative for adenoma</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" formControlName="adenomaPresentAtMucosalMargin" id="msnit_adenomaPresentAtMucosalMargin">
+                <label for="msnit_adenomaPresentAtMucosalMargin">Adenoma present at mucosal margin:</label>
+                <input type="text" formControlName="adenomaPresentAtMucosalMarginText">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" formControlName="other" id="msnit_other">
+                <label for="msnit_other">Other (specify):</label>
+                <input type="text" formControlName="otherText">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" formControlName="cannotBeDetermined" id="msnit_cannotBeDetermined">
+                <label for="msnit_cannotBeDetermined">Cannot be determined (explain):</label>
+                <input type="text" formControlName="cannotBeDeterminedText">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" formControlName="notApplicable" id="msnit_notApplicable">
+                <label for="msnit_notApplicable">Not applicable</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>+Margin Comment</legend>
+            <textarea formControlName="marginComment" rows="3"></textarea>
+        </fieldset>
+    </fieldset>
+<!-- Additional findings -->
+    <fieldset formGroupName="additionalFindings">
+        <legend>ADDITIONAL FINDINGS</legend>
+        <div class="checkbox-group">
+            <input type="checkbox" formControlName="noneIdentified" id="af_noneIdentified">
+            <label for="af_noneIdentified">None identified</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" formControlName="ulcerativeColitis" id="af_ulcerativeColitis">
+            <label for="af_ulcerativeColitis">Ulcerative colitis</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" formControlName="crohnDisease" id="af_crohnDisease">
+            <label for="af_crohnDisease">Crohn disease</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" formControlName="otherPolyps" id="af_otherPolyps">
+            <label for="af_otherPolyps">Other polyp(s) (specify type[s]):</label>
+            <input type="text" formControlName="otherPolypsText">
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" formControlName="other" id="af_other">
+            <label for="af_other">Other (specify):</label>
+            <input type="text" formControlName="otherText">
+        </div>
+    </fieldset>
+    
+<!-- Special Studies -->
+ <fieldset>
+    <legend>SPECIAL STUDIES</legend>
+    For reporting molecular testing and immunohistochemistry for mismatch repair proteins, and for other cancer biomarker testing
+results, the CAP Colorectal Biomarker Template should be used. Pending biomarker studies should be listed in the Comments
+section of this report.
+ </fieldset>
+
+    <fieldset>
+        <legend>Comment(s)</legend>
+        <textarea formControlName="comments" rows="3"></textarea>
+    </fieldset>
     <!-- Comments -->
 
     <br> <button type="submit" [disabled]="!pathologyReportForm.valid">Submit Report</button>

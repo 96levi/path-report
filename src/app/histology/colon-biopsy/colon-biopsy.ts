@@ -51,7 +51,7 @@ export class ColonBiopsy {
         // Depth of Sub-mucosal Invasion
         depthSubmucosalInvasion: [''],
         depthExact: [''],
-        depthexplain: [''],
+        depthExplain: [''],
 
         // Lymphatic and / or Vascular Invasion
         lymphaticVascularInvasion: [''],
@@ -66,24 +66,30 @@ export class ColonBiopsy {
         tumorBuddingExplain: [''],
         // Number of Tumor Buds
         numberTumorBuds: [''],
-        tumorBudsOther: [''],
-        tumorBudsExplain: [''],
+        numberTumorBudsSpecify: [''],
+        numberTumorBudsOther: [''],
+        numberTumorBudsExplain: [''],
 
         // Type of Polyp in which Invasive Carcinoma Arose
         typeOfPolyp: [''],
         typeOfPolypOther: [''],
-        // Polyp Size (required only for polypectomy specimens) 
+
+        // Polyp Size (required only for polypectomy specimens)
+        polypSize: [''],
         polypGreatestDimension: [''],
         polypAdditionalDimensions: [''],
         polypSizeExplain: [''],
+
         // Polyp Configuration (required only for polypectomy specimens) 
         polypConfiguration: [''],
         stalkLength: [''],
+        stalkLengthCm: [''],
         stalkLengthOther: [''],
         stalkLengthExplain: [''],
 
         // Tumor Dimension(s) (required only for intact endoscopic mucosal resections / transanal disk excision / endoscopic mucosal dissection)
         tumorDimensions: [''],
+        tumorGreatestDimension: [''],
         tumorAdditionalDimensions: [''],
         tumorDimensionsExplain: [''],
 
@@ -93,8 +99,10 @@ export class ColonBiopsy {
         // Number of Specimen Fragments (required only if specimen is fragmented)
         numberSpecimenFragments: [''],
         numberSpecimenFragmentsExactNumber: [''],
+
         // Dimension of Largest Fragment
         dimensionLargestFragment: [''],
+        dimensionLargestFragmentCm: [''],
         dimensionLargestFragmentAdditional: [''],
         dimensionLargestFragmentExplain: [''],
 
@@ -106,36 +114,63 @@ export class ColonBiopsy {
       // Margins
       margins: this.fb.group({
         // Margin Status for Invasive Carcinoma
+        marginsStatusForInvasiveCarcinoma: [''],
+        allMarginsNegative: [false],
         marginStatusInvasiveCarcinoma: [''],
         marginStatusInvasiveCarcinomaOther: [''],
         marginStatusInvasiveCarcinomaExplain: [''],
+        marginNotApplicable: [false],
+
+
         // Distance from Invasive Carcinoma to Deep / Stalk Margin
-        distanceFromInvasiveCarcinomaDeepStalkMargin: [''],
-        distanceFromInvasiveCarcinomaDeepStalkMarginExact: [''],
-        distanceFromInvasiveCarcinomaDeepStalkMarginOther: [''],
-        distanceFromInvasiveCarcinomaDeepStalkMarginExplain: [''],
+        distanceFromDeepStalkMargin: [''],
+        distanceFromDeepStalkMarginCm: [''],
+        distanceFromDeepStalkMarginOther: [''],
+        distanceFromDeepStalkMarginExplain: [''],
+
+
         // Distance from Invasive Carcinoma to Peripheral / Lateral Mucosal Margin
-        distanceFromInvasiveCarcinomaPeripheralLateralMucosalMargin: [''],
-        distanceFromInvasiveCarcinomaPeripheralLateralMucosalMarginExact: [''],
-        distanceFromInvasiveCarcinomaPeripheralLateralMucosalMarginOther: [''],
-        distanceFromInvasiveCarcinomaPeripheralLateralMucosalMarginExplain: [''],
+        distanceFromPeripheralLateralMargin: [''],
+        distanceFromPeripheralLateralMarginCm: [''],
+        distanceFromPeripheralLateralMarginOther: [''],
+        distanceFromPeripheralLateralMarginExplain: [''],
+
+        invasiveCarcinomaPresentAtMargin: [false],
         // Margin(s) Involved by Invasive Carcinoma (select all that apply)
-        marginInvolvedByInvasiveCarcinoma: [''],
-        marginInvolvedByInvasiveCarcinomaOther: [''],
-        marginInvolvedByInvasiveCarcinomaExplain: [''],
+        marginInvolvedByInvasiveCarcinoma: this.fb.group({
+          deepStalk: [false],
+          deepStalkText: [''],
+          peripheralLateralMucosal: [false],
+          other: [false],
+          otherText: [''],
+          cannotBeDetermined: [false],
+          cannotBeDeterminedText: [''],
+          notApplicable: [false]
+        }),
         // Margin Status for Non-Invasive Tumor (select all that apply)
-        marginStatusNonInvasiveTumorSelect: [''],
-        marginStatusNonInvasiveTumorAdenomaAtMucosalMargin: [''],
-        marginStatusNonInvasiveTumorOther: [''],
-        marginStatusNonInvasiveTumorExplain: [''],
+        marginStatusNonInvasiveTumor: this.fb.group({
+          allMarginsNegativeForAdenoma: [false],
+          adenomaPresentAtMucosalMargin: [false],
+          adenomaPresentAtMucosalMarginText: [''],
+          other: [false],
+          otherText: [''],
+          cannotBeDetermined: [false],
+          cannotBeDeterminedText: [''],
+          notApplicable: [false]
+        }),
         // Margin Comment
         marginComment: [''],
       }),
 
       // Additional Findings
       additionalFindings: this.fb.group({
-        findings: [''],
-        findingsOther: [''],
+        noneIdentified: [false],
+        ulcerativeColitis: [false],
+        crohnDisease: [false],
+        otherPolyps: [false],
+        otherPolypsText: [''],
+        other: [false],
+        otherText: ['']
       }),
 
       // Special Studies (Note H)
@@ -164,7 +199,7 @@ export class ColonBiopsy {
       }
 
       // Tumor
-      if (data.tumor.site || data.tumor.histologicType || data.tumor.histologicGrade) {
+      if (Object.values(data.tumor as Record<string, string>).some(v => v.trim() !== "")) {
         this.outputData += `TUMOR\n`;
         // Site
         if (data.tumor.site) {
@@ -202,9 +237,288 @@ export class ColonBiopsy {
           }
         }
 
+        // Tumor Extent
+        if (data.tumor.tumorExtent) {
+          this.outputData += `\tTumor Extent: ${data.tumor.tumorExtent}`;
+          if (data.tumor.tumorExtentExplain) {
+            this.outputData += ` ${data.tumor.tumorExtentExplain}\n`;
+          }
 
+          //+Depth of Sub-mucosal Invasion
+          if (data.tumor.depthSubmucosalInvasion) {
+            this.outputData += `\n\tDepth of Sub-mucosal Invasion: ${data.tumor.depthSubmucosalInvasion}`;
+            if (data.tumor.depthExact) {
+              this.outputData += ` ${data.tumor.depthExact} mm`;
+            }
+            if (data.tumor.depthExplain) {
+              this.outputData += ` ${data.tumor.depthExplain}\n`;
+            } else {
+              this.outputData += `\n`;
+            }
+          }
+        }
+
+        // Lymphatic and / or Vascular Invasion
+        if (data.tumor.lymphaticVascularInvasion) {
+          this.outputData += `\tLymphatic and/or Vascular Invasion: ${data.tumor.lymphaticVascularInvasion}`;
+          if (data.tumor.lymphaticVascularInvasionExplain) {
+            this.outputData += ` ${data.tumor.lymphaticVascularInvasionExplain}\n`;
+          } else {
+            this.outputData += `\n`;
+          }
+        }
+
+        // Perineural Invasion
+        if (data.tumor.perineuralInvasion) {
+          this.outputData += `\tPerineural Invasion: ${data.tumor.perineuralInvasion}`;
+          if (data.tumor.perineuralInvasionExplain) {
+            this.outputData += ` ${data.tumor.perineuralInvasionExplain}\n`;
+          } else {
+            this.outputData += `\n`;
+          }
+        }
+
+        // Tumor Budding Score
+        if (data.tumor.tumorBudding) {
+          this.outputData += `\tTumor Budding Score: ${data.tumor.tumorBudding}`;
+          if (data.tumor.tumorBuddingExplain) {
+            this.outputData += ` ${data.tumor.tumorBuddingExplain}\n`;
+          } else {
+            this.outputData += `\n`;
+          }
+
+          // Number of Tumor Buds
+          if (data.tumor.numberTumorBuds) {
+            this.outputData += `\tNumber of Tumor Buds: ${data.tumor.numberTumorBuds}`;
+            if (data.tumor.numberTumorBuds === "Specify number in one 'hotspot' field (in an area = 0.785 mm2):") {
+              this.outputData += ` ${data.tumor.numberTumorBudsSpecify} per 'hotspot'`;
+            } else if (data.tumor.numberTumorBuds === 'Other (specify):') {
+              this.outputData += ` ${data.tumor.tumorBudsOther}`;
+            }
+            if (data.tumor.tumorBudsExplain) {
+              this.outputData += ` ${data.tumor.tumorBudsExplain}\n`;
+            } else {
+              this.outputData += `\n`;
+            }
+          }
+        }
+
+        // Type of Polyp in which Invasive Carcinoma Arose
+        if (data.tumor.typeOfPolyp) {
+          this.outputData += `\tType of Polyp: ${data.tumor.typeOfPolyp} ${data.tumor.typeOfPolyp === 'Other (specify):' ? `${data.tumor.typeOfPolypOther}` : ''}\n`;
+        }
+
+        // Polyp Size
+        if (data.tumor.polypSize) {
+          if (data.tumor.polypSize !== 'Not applicable') {
+            this.outputData += `\tPolyp Size: `;
+            if (data.tumor.polypGreatestDimension) {
+              this.outputData += `Greatest dimension: ${data.tumor.polypGreatestDimension} cm`;
+            }
+            if (data.tumor.polypAdditionalDimensions) {
+              this.outputData += ` Additional Dimension: ${data.tumor.polypAdditionalDimensions} cm`;
+            }
+            if (data.tumor.polypSizeExplain) {
+              this.outputData += ` Cannot be determined: ${data.tumor.polypSizeExplain}`;
+            }
+            this.outputData += `\n`;
+          }
+        }
+
+        // Polyp Configuration
+        if (data.tumor.polypConfiguration) {
+          if (data.tumor.polypConfiguration !== 'Not applicable') {
+            this.outputData += `\tPolyp Configuration: ${data.tumor.polypConfiguration}`;
+            if (data.tumor.polypConfiguration === 'Pedunculated with stalk' && data.tumor.stalkLength) {
+              this.outputData += ` - Stalk Length: ${data.tumor.stalkLength}`;
+              if (data.tumor.stalkLength === 'Specify length in Centimeters (cm):') {
+                this.outputData += ` ${data.tumor.stalkLengthCm} cm`;
+              } else if (data.tumor.stalkLength === 'Other (specify):') {
+                this.outputData += ` ${data.tumor.stalkLengthOther}`;
+              }
+            }
+            this.outputData += `\n`;
+          }
+        }
+
+        // Tumor Dimensions
+        if (data.tumor.tumorDimensions) {
+          if (data.tumor.tumorDimensions !== 'Not applicable') {
+            this.outputData += `\tTumor Dimensions: `;
+            if (data.tumor.tumorGreatestDimension) {
+              this.outputData += `Greatest dimension: ${data.tumor.tumorGreatestDimension} cm`;
+            }
+            if (data.tumor.tumorAdditionalDimensions) {
+              this.outputData += ` Additional Dimension: ${data.tumor.tumorAdditionalDimensions} cm`;
+            }
+            if (data.tumor.tumorDimensionsExplain) {
+              this.outputData += ` Cannot be determined: ${data.tumor.tumorDimensionsExplain}`;
+            }
+            this.outputData += `\n`;
+          }
+        }
+
+        // Margin Orientation Status
+        if (data.tumor.marginOrientationStatus) {
+          if (data.tumor.marginOrientationStatus !== 'Not applicable') {
+            this.outputData += `\tMargin Orientation Status: ${data.tumor.marginOrientationStatus}\n`;
+          }
+        }
+
+        // Number of Specimen Fragments
+        if (data.tumor.numberSpecimenFragments) {
+          if (data.tumor.numberSpecimenFragments !== 'Not applicable') {
+            this.outputData += `\tNumber of Specimen Fragments: ${data.tumor.numberSpecimenFragments}`;
+            if (data.tumor.numberSpecimenFragments === 'Exact number (specify):') {
+              this.outputData += ` ${data.tumor.numberSpecimenFragmentsExactNumber}`;
+            }
+            this.outputData += `\n`;
+          }
+        }
+
+        // Dimension of Largest Fragment
+        if (data.tumor.dimensionLargestFragment) {
+          if (data.tumor.dimensionLargestFragment !== 'Not applicable') {
+            this.outputData += `\tDimension of Largest Fragment: `;
+            if (data.tumor.dimensionLargestFragmentCm) {
+              this.outputData += `${data.tumor.dimensionLargestFragmentCm} cm`;
+            }
+            if (data.tumor.dimensionLargestFragmentAdditional) {
+              this.outputData += ` Additional: ${data.tumor.dimensionLargestFragmentAdditional} cm`;
+            }
+            if (data.tumor.dimensionLargestFragmentExplain) {
+              this.outputData += ` Cannot be determined: ${data.tumor.dimensionLargestFragmentExplain}`;
+            }
+            this.outputData += `\n`;
+          }
+        }
+
+        // Tumor Comment
+        if (data.tumor.tumorComment) {
+          this.outputData += `\tTumor Comment: ${data.tumor.tumorComment}\n`;
+        }
 
         this.outputData += `\n`;
+      }
+
+      // Margins
+      if (Object.values(data.margins as Record<string, any>).some(v => {
+        if (typeof v === 'string') return v.trim() !== "";
+        if (typeof v === 'boolean') return v;
+        if (typeof v === 'object') return Object.values(v).some(x => (typeof x === 'string' ? x.trim() : x) !== "");
+        return false;
+      })) {
+        this.outputData += `MARGINS\n`;
+
+        // Margin Status for Invasive Carcinoma
+        if (data.margins.allMarginsNegative) {
+          this.outputData += `\tMargin Status for Invasive Carcinoma: All margins negative\n`;
+        } else if (data.margins.marginStatusInvasiveCarcinoma) {
+          this.outputData += `\tMargin Status for Invasive Carcinoma: ${data.margins.marginStatusInvasiveCarcinoma} ${data.margins.marginStatusInvasiveCarcinoma === 'Other (specify):' ? `${data.margins.marginStatusInvasiveCarcinomaOther}` : ''}\n`;
+          if (data.margins.marginStatusInvasiveCarcinomaExplain) {
+            this.outputData += `\t\t${data.margins.marginStatusInvasiveCarcinomaExplain}\n`;
+          }
+        }
+
+        // Distance from Invasive Carcinoma to Deep / Stalk Margin
+        if (data.margins.distanceFromDeepStalkMargin) {
+          this.outputData += `\tDistance from Invasive Carcinoma to Deep/Stalk Margin: ${data.margins.distanceFromDeepStalkMargin}`;
+          if (data.margins.distanceFromDeepStalkMarginCm) {
+            this.outputData += ` ${data.margins.distanceFromDeepStalkMarginCm} cm`;
+          } else if (data.margins.distanceFromDeepStalkMarginOther) {
+            this.outputData += ` ${data.margins.distanceFromDeepStalkMarginOther}`;
+          }
+          this.outputData += `\n`;
+        }
+
+        // Distance from Invasive Carcinoma to Peripheral / Lateral Mucosal Margin
+        if (data.margins.distanceFromPeripheralLateralMargin) {
+          this.outputData += `\tDistance from Invasive Carcinoma to Peripheral/Lateral Margin: ${data.margins.distanceFromPeripheralLateralMargin}`;
+          if (data.margins.distanceFromPeripheralLateralMarginCm) {
+            this.outputData += ` ${data.margins.distanceFromPeripheralLateralMarginCm} cm`;
+          } else if (data.margins.distanceFromPeripheralLateralMarginOther) {
+            this.outputData += ` ${data.margins.distanceFromPeripheralLateralMarginOther}`;
+          }
+          this.outputData += `\n`;
+        }
+
+        // Invasive Carcinoma Present at Margin
+        if (data.margins.invasiveCarcinomaPresentAtMargin) {
+          this.outputData += `\tInvasive carcinoma present at margin\n`;
+
+          // Margins Involved by Invasive Carcinoma
+          const marginInvolved = data.margins.marginInvolvedByInvasiveCarcinoma;
+          if (marginInvolved.deepStalk || marginInvolved.peripheralLateralMucosal || marginInvolved.other || marginInvolved.cannotBeDetermined) {
+            this.outputData += `\tMargin(s) Involved by Invasive Carcinoma:\n`;
+            if (marginInvolved.deepStalk) {
+              this.outputData += `\t\tDeep/Stalk ${marginInvolved.deepStalkText ? `: ${marginInvolved.deepStalkText}` : ''}\n`;
+            }
+            if (marginInvolved.peripheralLateralMucosal) {
+              this.outputData += `\t\tPeripheral/Lateral Mucosal\n`;
+            }
+            if (marginInvolved.other) {
+              this.outputData += `\t\tOther ${marginInvolved.otherText ? `: ${marginInvolved.otherText}` : ''}\n`;
+            }
+            if (marginInvolved.cannotBeDetermined) {
+              this.outputData += `\t\tCannot be determined ${marginInvolved.cannotBeDeterminedText ? `: ${marginInvolved.cannotBeDeterminedText}` : ''}\n`;
+            }
+          }
+        } else {
+          // Margin Status for Non-Invasive Tumor
+          const marginNonInvasive = data.margins.marginStatusNonInvasiveTumor;
+          if (marginNonInvasive.allMarginsNegativeForAdenoma || marginNonInvasive.adenomaPresentAtMucosalMargin || marginNonInvasive.other || marginNonInvasive.cannotBeDetermined) {
+            this.outputData += `\tMargin Status for Non-Invasive Tumor:\n`;
+            if (marginNonInvasive.allMarginsNegativeForAdenoma) {
+              this.outputData += `\t\tAll margins negative for adenoma\n`;
+            }
+            if (marginNonInvasive.adenomaPresentAtMucosalMargin) {
+              this.outputData += `\t\tAdenoma present at mucosal margin ${marginNonInvasive.adenomaPresentAtMucosalMarginText ? `: ${marginNonInvasive.adenomaPresentAtMucosalMarginText}` : ''}\n`;
+            }
+            if (marginNonInvasive.other) {
+              this.outputData += `\t\tOther ${marginNonInvasive.otherText ? `: ${marginNonInvasive.otherText}` : ''}\n`;
+            }
+            if (marginNonInvasive.cannotBeDetermined) {
+              this.outputData += `\t\tCannot be determined ${marginNonInvasive.cannotBeDeterminedText ? `: ${marginNonInvasive.cannotBeDeterminedText}` : ''}\n`;
+            }
+          }
+        }
+
+        // Margin Comment
+        if (data.margins.marginComment) {
+          this.outputData += `\tMargin Comment: ${data.margins.marginComment}\n`;
+        }
+
+        this.outputData += `\n`;
+      }
+
+      // Additional Findings
+      if (Object.values(data.additionalFindings as Record<string, any>).some(v => (typeof v === 'string' ? v.trim() : v) !== "")) {
+        this.outputData += `ADDITIONAL FINDINGS\n`;
+
+        if (data.additionalFindings.noneIdentified) {
+          this.outputData += `\tNone identified\n`;
+        } else {
+          if (data.additionalFindings.ulcerativeColitis) {
+            this.outputData += `\tUlcerative Colitis\n`;
+          }
+          if (data.additionalFindings.crohnDisease) {
+            this.outputData += `\tCrohn Disease\n`;
+          }
+          if (data.additionalFindings.otherPolyps) {
+            this.outputData += `\tOther Polyps ${data.additionalFindings.otherPolypsText ? `: ${data.additionalFindings.otherPolypsText}` : ''}\n`;
+          }
+          if (data.additionalFindings.other) {
+            this.outputData += `\tOther ${data.additionalFindings.otherText ? `: ${data.additionalFindings.otherText}` : ''}\n`;
+          }
+        }
+
+        this.outputData += `\n`;
+      }
+
+      // Comments
+      if (data.comments) {
+        this.outputData += `COMMENTS\n`;
+        this.outputData += `\t${data.comments}\n\n`;
       }
     }
   }
@@ -220,179 +534,59 @@ export class ColonBiopsy {
 }
 
 
-/* Reference document:
-SPECIMEN
-Procedure
-___ Excisional biopsy (polypectomy)
-___ Endoscopic mucosal resection (EMR)
-___ Endoscopic submucosal dissection (ESD)
-___ Transanal disk excision
-___ Other (specify): _________________
-___ Not specified
-+Specimen Integrity
-___ Intact
-___ Fragmented
-TUMOR
-Tumor Site (Note A)
-___ Cecum: _________________
-___ Ileocecal valve: _________________
-___ Ascending colon: _________________
-___ Hepatic flexure: _________________
-___ Transverse colon: _________________
-___ Splenic flexure: _________________
-___ Descending colon: _________________
-___ Sigmoid colon: _________________
-___ Rectosigmoid region: _________________
-___ Rectum: _________________
-___ Other (specify): _________________
-___ Not specified
-Histologic Type (Note B)
-___ Adenocarcinoma
-___ Mucinous adenocarcinoma
-___ Signet-ring cell carcinoma (poorly cohesive carcinoma)
-___ Medullary adenocarcinoma
-___ Serrated adenocarcinoma
-___ Micropapillary carcinoma
-___ Adenoma-like adenocarcinoma
-___ Adenosquamous carcinoma
-___ Undifferentiated carcinoma
-___ Carcinoma with sarcomatoid component
-___ Large cell neuroendocrine carcinoma
-___ Small cell neuroendocrine carcinoma
-___ Mixed neuroendocrine-non-neuroendocrine neoplasm
-___ Other histologic type not listed (specify): _________________
-___ Carcinoma, type cannot be determined: _________________
-+Histologic Type Comment: _________________
-Histologic Grade (Note C)
-___ G1, well differentiated
-___ G2, moderately differentiated
-___ G3, poorly differentiated
-___ G4, undifferentiated
-___ Other (specify): _________________
-___ GX, cannot be assessed: _________________
-___ Not applicable: _________________
-+Size of Invasive Carcinoma
-___ Greatest dimension in Centimeters (cm): _________________ cm
-+Additional Dimension in Centimeters (cm): ____ x ____ cm
-___ Cannot be determined (explain): _________________
-Tumor Extent (Note D)
-___ Invades lamina propria
-___ Invades muscularis mucosae
-___ Invades submucosa
-___ Invades muscularis propria
-___ Cannot be determined: _________________
-+Depth of Sub-mucosal Invasion (Note D)
-___ Less than 1 mm
-___ Greater than or equal to 1 mm and less than 2 mm
-___ Greater than 2 mm
-___ Exact depth in Millimeters (mm): _________________ mm
-___ Cannot be determined (explain): _________________
-Lymphatic and / or Vascular Invasion (Note E) (select all that apply)
-___ Not identified
-___ Small vessel
-___ Large vessel (venous)
-___ Present (not otherwise specified)
-___ Cannot be determined: _________________
-Perineural Invasion (Note E)
-___ Not identified
-___ Present
-___ Cannot be determined: _________________
-Tumor Budding Score (Note F)
-___ Low (0-4)
-___ Intermediate (5-9)
-___ High (10 or more)
-___ Cannot be determined: _________________
-+Number of Tumor Buds (Note F)
-___ Specify number in one 'hotspot' field (in an area = 0.785 mm2): _________________ per 'hotspot'
-field
-___ Other (specify): _________________
-___ Cannot be determined: _________________
-+Type of Polyp in which Invasive Carcinoma Arose (Note G)
-___ Tubular adenoma
-___ Villous adenoma
-___ Tubulovillous adenoma
-___ Traditional serrated adenoma
-___ Sessile serrated adenoma / sessile serrated polyp / sessile serrated lesion
-___ Hamartomatous polyp
-___ Other (specify): _________________
-Polyp Size (required only for polypectomy specimens)
-___ Not applicable
-___ Greatest polyp dimension in Centimeters (cm): _________________ cm
-+Additional Polyp Dimension in Centimeters (cm): _________________ cm
-___ Cannot be determined (explain): _________________
-Polyp Configuration (required only for polypectomy specimens)
-___ Not applicable
-___ Pedunculated with stalk
-+Stalk Length
-___ Specify length in Centimeters (cm): _________________ cm
-___ Other (specify): _________________
-___ Cannot be determined: _________________
-___ Sessile
-Tumor Dimension(s) (required only for intact endoscopic mucosal resections / transanal disk
-excision / endoscopic mucosal dissection)
-___ Not applicable
-___ Greatest dimension in Centimeters (cm): _________________ cm
-+Additional Dimension in Centimeters (cm): ____ x ____ cm
-___ Cannot be determined (explain): _________________
-Margin Orientation Status (required only if applicable)
-___ Not applicable
-___ Oriented
-___ Unoriented
-Number of Specimen Fragments (required only if specimen is fragmented)
-___ Not applicable (specimen is intact)
-___ Exact number (specify): _________________
-___ Cannot be determined
-+Dimension of Largest Fragment
-___ Greatest dimension of the largest fragment in Centimeters (cm): _________________ cm
-+Additional Dimension of the Largest Fragment in Centimeters (cm): ____ x ____ cm
-___ Cannot be determined (explain): _________________
-+Tumor Comment: _________________
-MARGINS
-Margin Status for Invasive Carcinoma
-___ All margins negative for invasive carcinoma
-Distance from Invasive Carcinoma to Deep / Stalk Margin
-Specify in Centimeters (cm)
-___ Exact distance in cm: _________________ cm
-___ Greater than 1 cm
-Other
-___ Other (specify): _________________
-___ Cannot be determined: _________________
-___ Not applicable: _________________
-+Distance from Invasive Carcinoma to Peripheral / Lateral Mucosal Margin
-Specify in Centimeters (cm)
-___ Exact distance in cm: _________________ cm
-___ Greater than 1 cm
-Other
-___ Other (specify): _________________
-___ Cannot be determined: _________________
-___ Not applicable: _________________
-___ Invasive carcinoma present at margin
-Margin(s) Involved by Invasive Carcinoma (select all that apply)
-___ Deep (stalk): _________________
-___ Peripheral / lateral mucosal
-___ Other (specify): _________________
-___ Cannot be determined (explain): _________________
-___ Other (specify): _________________
-___ Cannot be determined (explain): _________________
-___ Not applicable
-Margin Status for Non-Invasive Tumor (select all that apply)
-___ All margins negative for adenoma
-___ Adenoma present at mucosal margin: _________________
-___ Other (specify): _________________
-___ Cannot be determined (explain): _________________
-___ Not applicable
-+Margin Comment: _________________
-ADDITIONAL FINDINGS
-+Additional Findings (select all that apply)
-___ None identified
-___ Ulcerative colitis
-___ Crohn disease
-___ Other polyp(s) (specify type[s]): _________________
-___ Other (specify): _________________
-SPECIAL STUDIES (Note H)
-For reporting molecular testing and immunohistochemistry for mismatch repair proteins, and for other cancer biomarker testing
-results, the CAP Colorectal Biomarker Template should be used. Pending biomarker studies should be listed in the Comments
-section of this report.
-COMMENTS
-Comment(s): _________________
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
