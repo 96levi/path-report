@@ -3,6 +3,7 @@ import { ColonBiomarker } from './histology/colon-biomarker/colon-biomarker';
 import { Home } from './home/home';
 import { ColonResection } from './histology/colon-resection/colon-resection';
 import { ColonBiopsy } from './histology/colon-biopsy/colon-biopsy';
+import { Sponsor } from './sponsor/sponsor';
 
 export const routes: Routes = [
      // Define a route for the new component
@@ -10,6 +11,7 @@ export const routes: Routes = [
   { path: 'colon-biomarker', component: ColonBiomarker },
   { path: 'colon-resection', component: ColonResection },
   { path: 'colon-biopsy', component: ColonBiopsy },
+  { path: 'sponsor', component: Sponsor},
 
   // Add other routes as needed
   // { path: '', component: HomeComponent }, 
